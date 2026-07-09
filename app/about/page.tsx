@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function About() {
   return (
     <div className="flex flex-1 flex-col items-center bg-background font-sans">
-      <section className="flex w-full max-w-3xl flex-col gap-8 px-6 py-16">
+      <section className="flex w-full flex-col gap-8 px-6 py-16">
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
           <Image src="/assets/rowland.jpg" alt="Rowland" width={200} height={200} className="object-cover" />
           <div className="flex flex-col gap-4">
