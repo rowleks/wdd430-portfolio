@@ -1,5 +1,5 @@
 import ProjectList from "@/components/ProjectList";
-import { projects } from "@/lib/projects";
+import { projects } from "@/lib/projects-db";
 
 export default function SchoolPage() {
   const filtered = projects.filter((p) => p.type === "school");
