@@ -1,10 +1,4 @@
-interface ProjectCardProps {
-  title: string;
-  description: string;
-  technologies: string[];
-  link?: string;
-  type: "school" | "opensource";
-}
+import type { Project as ProjectCardProps } from "@/lib/projects-db";
 
 export default function ProjectCard({ title, description, technologies, link, type }: ProjectCardProps) {
   return (
