@@ -1,7 +1,8 @@
 import ProjectList from "@/components/ProjectList";
-import { projects } from "@/lib/projects-db";
+import { getProjects } from "@/lib/projects-db";
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const projects = await getProjects();
   return (
     <div>
       <ProjectList projects={projects} />

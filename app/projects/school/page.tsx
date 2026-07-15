@@ -1,12 +1,12 @@
 import ProjectList from "@/components/ProjectList";
-import { projects } from "@/lib/projects-db";
+import { getProjects } from "@/lib/projects-db";
 
-export default function SchoolPage() {
-  const filtered = projects.filter((p) => p.type === "school");
+export default async function SchoolPage() {
+  const projects = await getProjects("school");
   return (
     <div className="space-y-8">
       <h2>School Projects</h2>
-      <ProjectList projects={filtered} />
+      <ProjectList projects={projects} />
     </div>
   );
 }

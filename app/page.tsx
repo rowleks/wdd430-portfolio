@@ -1,7 +1,8 @@
 import ProjectList from "@/components/ProjectList";
-import { projects } from "@/lib/projects-db";
+import { getProjects } from "@/lib/projects-db";
 
-export default function Home() {
+export default async function Home() {
+  const projects = await getProjects();
   return (
     <div className="flex flex-1 flex-col items-center bg-background font-sans">
       <section className="flex w-full max-w-5xl flex-col gap-8 px-6 py-16">

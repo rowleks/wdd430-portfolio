@@ -7,7 +7,7 @@ export const GET = async (_req: Request, { params }: { params: Promise<{ id: str
   if (isNaN(numericId)) {
     return NextResponse.json({ error: "Invalid id" }, { status: 400 });
   }
-  const project = getProjectById(numericId);
+  const project = await getProjectById(numericId);
   if (!project) {
     return NextResponse.json({ error: "Project not found" }, { status: 404 });
   }
