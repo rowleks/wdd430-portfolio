@@ -1,28 +1,60 @@
-import { sql } from "@vercel/postgres";
+import { db } from "./db";
 
-export interface Project {
+export type Project = {
   id: number;
   title: string;
   description: string;
   technologies: string[];
-  link?: string;
-  type: "school" | "opensource";
+  link: string | null;
+  type: string;
+};
+
+export interface ProjectFilters {
+  search?: string | null;
+  type?: string | null;
+  page?: number;
+  limit?: number;
 }
 
-export async function getProjects(type?: string | null): Promise<Project[]> {
-  if (type) {
-    const { rows } = await sql<Project>`
-      SELECT * FROM projects WHERE type = ${type} ORDER BY id
-    `;
-    return rows;
-  }
-  const { rows } = await sql<Project>`SELECT * FROM projects ORDER BY id`;
-  return rows;
+export async function getProjects(filters?: ProjectFilters): Promise<Project[]> {
+  const { search, type, page = 1, limit = 6 } = filters ?? {};
+
+  return db.project.findMany({
+    where: {
+      ...(type ? { type } : {}),
+      ...(search
+        ? {
+            OR: [
+              { title: { contains: search, mode: "insensitive" } },
+              { description: { contains: search, mode: "insensitive" } },
+            ],
+          }
+        : {}),
+    },
+    orderBy: { id: "asc" },
+    skip: (page - 1) * limit,
+    take: limit,
+  });
+}
+
+export async function getProjectsCount(filters?: Pick<ProjectFilters, "search" | "type">): Promise<number> {
+  const { search, type } = filters ?? {};
+
+  return db.project.count({
+    where: {
+      ...(type ? { type } : {}),
+      ...(search
+        ? {
+            OR: [
+              { title: { contains: search, mode: "insensitive" } },
+              { description: { contains: search, mode: "insensitive" } },
+            ],
+          }
+        : {}),
+    },
+  });
 }
 
 export async function getProjectById(id: number): Promise<Project | null> {
-  const { rows } = await sql<Project>`
-    SELECT * FROM projects WHERE id = ${id} LIMIT 1
-  `;
-  return rows[0] ?? null;
+  return db.project.findUnique({ where: { id } });
 }

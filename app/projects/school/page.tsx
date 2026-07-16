@@ -4,7 +4,7 @@ import ProjectSkeleton from "@/components/ProjectSkeleton";
 import { getProjects } from "@/lib/projects-db";
 
 async function SchoolProjects() {
-  const projects = await getProjects("school");
+  const projects = await getProjects({ type: "school" });
   return <ProjectList projects={projects} />;
 }
 
