@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import SearchBar from "@/components/SearchBar";
 
 export default function ProjectsLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -8,6 +10,9 @@ export default function ProjectsLayout({ children }: { children: React.ReactNode
           <h1 className="text-foreground">Projects</h1>
           <p className="text-muted-foreground">A selection of things I&apos;ve built.</p>
         </div>
+        <Suspense>
+          <SearchBar />
+        </Suspense>
         <nav className="flex gap-4 text-sm font-medium">
           <Link
             href="/projects"
