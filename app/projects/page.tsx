@@ -1,11 +1,30 @@
+import { Suspense } from "react";
 import ProjectList from "@/components/ProjectList";
-import { getProjects } from "@/lib/projects-db";
+import ProjectSkeleton from "@/components/ProjectSkeleton";
+import Pagination from "@/components/Pagination";
+import { getProjects, getProjectsCount } from "@/lib/projects-db";
 
-export default async function ProjectsPage() {
-  const projects = await getProjects();
+async function Projects({ searchParams }: { searchParams: Promise<{ q?: string; page?: string }> }) {
+  const { q, page } = await searchParams;
+  const currentPage = Number(page) || 1;
+
+  const [projects, totalCount] = await Promise.all([
+    getProjects({ search: q, page: currentPage }),
+    getProjectsCount({ search: q }),
+  ]);
+
   return (
-    <div>
+    <>
       <ProjectList projects={projects} />
-    </div>
+      <Pagination totalCount={totalCount} />
+    </>
+  );
+}
+
+export default async function ProjectsPage({ searchParams }: { searchParams: Promise<{ q?: string; page?: string }> }) {
+  return (
+    <Suspense fallback={<ProjectSkeleton />}>
+      <Projects searchParams={searchParams} />
+    </Suspense>
   );
 }

@@ -48,6 +48,7 @@ export async function getProjectsCount(filters?: Pick<ProjectFilters, "search" |
             OR: [
               { title: { contains: search, mode: "insensitive" } },
               { description: { contains: search, mode: "insensitive" } },
+              { technologies: { hasSome: [search] } },
             ],
           }
         : {}),
